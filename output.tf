@@ -1,4 +1,4 @@
-output "zREADME" {
+output "README" {
   value = <<README
 # ------------------------------------------------------------------------------
 # ${var.name} Consul
