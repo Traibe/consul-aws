@@ -20,8 +20,8 @@ that key/value.
 Use the HTTP API to retrieve the Consul members, write a key/value,
 and read that key/value.
 
-${!var.use_lb_cert ?
-"If you're making HTTP API requests to Consul from the Bastion host,
+${!var.use_lb_cert ? <<-EOT2
+If you're making HTTP API requests to Consul from the Bastion host,
 the below env var has been set for you.
 
   $ export CONSUL_ADDR=http://127.0.0.1:8500
@@ -36,8 +36,10 @@ the below env var has been set for you.
   $ curl \\
       -X GET \\
       $${CONSUL_ADDR}/v1/kv/api | jq '.' # Read a KV"
+EOT2
 :
-"If you're making HTTPS API requests to Consul from the Bastion host,
+<<-EOT3
+If you're making HTTPS API requests to Consul from the Bastion host,
 the below env vars have been set for you.
 
   $ export CONSUL_ADDR=https://127.0.0.1:8080
@@ -58,6 +60,7 @@ the below env vars have been set for you.
       -X GET \\
       -k --cacert $${CONSUL_CACERT} --cert $${CONSUL_CLIENT_CERT} --key $${CONSUL_CLIENT_KEY} \\
       $${CONSUL_ADDR}/v1/kv/api | jq '.' # Read a KV"
+EOT3
 }
 EOT
 }
