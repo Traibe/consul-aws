@@ -51,7 +51,7 @@ variable "public" {
   default     = false
 }
 
-variable "count" {
+variable "instance_count" {
   description = "Number of Consul nodes to provision across private subnets, defaults to private subnet count."
   default     = -1
 }
