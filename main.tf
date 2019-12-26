@@ -37,7 +37,7 @@ data "template_file" "consul_init" {
 }
 
 module "consul_server_sg" {
-  source = "github.com/hashicorp-modules/consul-server-ports-aws"
+  source = "github.com/Traibe/consul-server-ports-aws"
 
   create      = var.create ? 1 : 0
   name        = "${var.name}-consul-server"
