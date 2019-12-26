@@ -43,7 +43,7 @@ variable "vpc_cidr" {
 
 variable "subnet_ids" {
   description = "Subnet ID(s) to provision resources in."
-  type        = "list"
+  type        = list(string)
 }
 
 variable "public" {
