@@ -1,5 +1,5 @@
 output "zREADME" {
-  value = <<README
+  value = <<-EOT
 # ------------------------------------------------------------------------------
 # ${var.name} Consul
 # ------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ the below env vars have been set for you.
       -k --cacert $${CONSUL_CACERT} --cert $${CONSUL_CLIENT_CERT} --key $${CONSUL_CLIENT_KEY} \\
       $${CONSUL_ADDR}/v1/kv/api | jq '.' # Read a KV"
 }
-README
+EOT
 }
 
 output "consul_sg_id" {
