@@ -1,16 +1,16 @@
 terraform {
-  required_version = ">= 0.11.5"
+  required_version = ">= 0.12"
 }
 
 module "consul_auto_join_instance_role" {
   source = "github.com/Traibe/consul-auto-join-instance-role-aws"
 
-  create = var.create ? 1 : 0
+  create = var.create == true ? 1 : 0
   name   = var.name
 }
 
 data "aws_ami" "consul" {
-  count       = var.create && var.image_id == "" ? 1 : 0
+  count       = var.create == true && var.image_id == "" ? 1 : 0
   most_recent = true
   owners      = [var.ami_owner]
   name_regex  = "consul-image_${lower(var.release_version)}_consul_${lower(var.consul_version)}_${lower(var.os)}_${var.os_version}.*"
@@ -27,7 +27,7 @@ data "aws_ami" "consul" {
 }
 
 data "template_file" "consul_init" {
-  count    = var.create ? 1 : 0
+  count    = var.create == true ? 1 : 0
   template = file("${path.module}/templates/init-systemd.sh.tpl")
 
   vars = {
@@ -39,7 +39,7 @@ data "template_file" "consul_init" {
 module "consul_server_sg" {
   source = "github.com/Traibe/consul-server-ports-aws"
 
-  create      = var.create ? 1 : 0
+  create      = var.create == true ? 1 : 0
   name        = "${var.name}-consul-server"
   vpc_id      = var.vpc_id
   cidr_blocks = [var.public ? "0.0.0.0/0" : var.vpc_cidr] # If there's a public IP, open Consul ports for public access - DO NOT DO THIS IN PROD
@@ -47,7 +47,7 @@ module "consul_server_sg" {
 }
 
 resource "aws_security_group_rule" "ssh" {
-  count = var.create ? 1 : 0
+  count = var.create == true ? 1 : 0
 
   security_group_id = module.consul_server_sg.consul_server_sg_id
   type              = "ingress"
@@ -58,7 +58,7 @@ resource "aws_security_group_rule" "ssh" {
 }
 
 resource "aws_launch_configuration" "consul" {
-  count = var.create ? 1 : 0
+  count = var.create == true ? 1 : 0
 
   name_prefix                 = format("%s-consul-", var.name)
   associate_public_ip_address = var.public
